@@ -1,5 +1,6 @@
 import express from "express"
 import { User, validationUser } from "../schemas/usersSchema.js"
+import { auth } from "../middleware/auth.js";
 const router = express.Router()
 
 function ReturnInformation(msg, variant, payload) {
@@ -28,7 +29,7 @@ router.post("/", async (req, res) => {
     }
 })
 
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
     try {
         const { limit, page } = req.query
         const user = await User.find().limit(limit).skip((page - 1) * limit)
